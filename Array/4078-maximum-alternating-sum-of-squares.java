@@ -1,32 +1,21 @@
-import java.util.*;
-
 class Solution {
     public long maxAlternatingSum(int[] nums) {
+        for(int i = 0;i < nums.length;i++){
+            nums[i] = Math.abs(nums[i]);
+        }
         Arrays.sort(nums);
-
-        int n = nums.length;
-        long sum = 0;
-        Integer[] arr = new Integer[n];
-
-        for (int i = 0; i < n; i++) {
-            arr[i] = nums[i];
+        long ans = 0L;
+        int i = 0;
+        int j = nums.length-1;
+        while(i < j && i < nums.length && j >=0 && j != i){
+            ans += (1L*nums[j]*nums[j]);
+            ans -= (1L*nums[i]*nums[i]);
+            i++;
+            j--;
         }
-
-        Arrays.sort(arr, (a, b) -> Long.compare(
-            Math.abs((long)b),
-            Math.abs((long)a)
-        ));
-
-        for (int i = 0; i < n; i++) {
-            long square = (long) arr[i] * arr[i];
-
-            if (i < (n + 1) / 2) {
-                sum += square;
-            } else {
-                sum -= square;
-            }
+        if(i == j){
+            ans += (1L*nums[i]*nums[i]);
         }
-
-        return sum;
+        return ans;
     }
 }
