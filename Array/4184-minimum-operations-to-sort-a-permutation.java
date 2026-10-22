@@ -1,43 +1,33 @@
 class Solution {
     public int minOperations(int[] nums) {
-        int n = nums.length;
-        int zero = 0;
-
-        for (int i = 0; i < n; i++) {
-            if (nums[i] == 0) {
-                zero = i;
-                break;
+        int n=nums.length;
+        if(n==1)return 0;
+        int dec=-1;
+        for(int i=1;i<n;i++){
+            if(nums[i]!=nums[i-1]+1){
+                if(dec!=-1){
+                    dec=n+1;
+                    break;
+                }
+                dec=i;
             }
         }
-
-        int ans = Integer.MAX_VALUE;
-
-        boolean inc = true;
-        boolean dec = true;
-
-        for (int i = 1; i < n; i++) {
-            int prev = (zero + i - 1) % n;
-            int curr = (zero + i) % n;
-
-            if (nums[curr] != (nums[prev] + 1) % n) {
-                inc = false;
-            }
-
-            if (nums[curr] != (nums[prev] - 1 + n) % n) {
-                dec = false;
+        if(dec==-1)return 0;
+        if(dec<n)return Math.min(dec,2+(n-dec));
+        int inc=-1;
+        for(int i=1;i<n;i++){
+            if(nums[i]!=nums[i-1]-1){
+                if(inc!=-1){
+                    inc=n+1;
+                    break;
+                }
+                inc=i;
             }
         }
-
-        if (inc) {
-            ans = Math.min(ans, zero);
-            ans = Math.min(ans, n - zero + 2);
+        if(inc==-1)return 1;
+        if(inc<n){
+            return Math.min(inc,n-inc)+1;
         }
-
-        if (dec) {
-            ans = Math.min(ans, zero + 2);
-            ans = Math.min(ans, n - zero);
-        }
-
-        return ans == Integer.MAX_VALUE ? -1 : ans;
+        return -1;
     }
 }
